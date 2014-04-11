@@ -33,9 +33,11 @@
                 });
             if (counter && !this.options.indefinite) {
                 this.labelContent = ($("<div></div>")
-                    .text(this._value())
                     .addClass('ui-jqm-progressbar-label ui-jqm-progressbar-corner-all'))
                     .appendTo(this.element);
+				if (this._showCounter) {
+					this.labelContent.text(this._value());
+				}
             }
             this.valueContent = ($("<div></div>")
                 .addClass(['ui-jqm-progressbar-bg ', " ui-jqm-progressbar-active-", innerTheme,
@@ -89,7 +91,9 @@
             this.oldValue = value;
             this.valueContent.css("width", [this._percentage(), '%'].join(""));
             if ((typeof this.labelContent !== "undefined")) {
-                this.labelContent.text([this._percentage(), '%'].join(""));
+				if (this._showCounter) {
+					this.labelContent.text([this._percentage(), '%'].join(""));
+				}
             }
             this.element.attr("content-value", value);
         }
@@ -128,6 +132,7 @@
         this._mini = false;
         this._isRunning = false;
         this._indefinite = false;
+		this._showCounter = true;
         return this;
     };
 
