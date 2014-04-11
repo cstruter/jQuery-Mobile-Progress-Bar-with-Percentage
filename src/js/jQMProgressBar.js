@@ -35,7 +35,7 @@
                 this.labelContent = ($("<div></div>")
                     .addClass('ui-jqm-progressbar-label ui-jqm-progressbar-corner-all'))
                     .appendTo(this.element);
-				if (this._showCounter) {
+				if (this.options.counter) {
 					this.labelContent.text(this._value());
 				}
             }
@@ -90,10 +90,8 @@
             var value = this.value();
             this.oldValue = value;
             this.valueContent.css("width", [this._percentage(), '%'].join(""));
-            if ((typeof this.labelContent !== "undefined")) {
-				if (this._showCounter) {
-					this.labelContent.text([this._percentage(), '%'].join(""));
-				}
+			if (this.options.counter) {
+				this.labelContent.text([this._percentage(), '%'].join(""));
             }
             this.element.attr("content-value", value);
         }
@@ -348,7 +346,7 @@
         if (this._isBuilt) {
             throw '[Error]: pbar is already built.';
         } else {
-            $(['#', this._id].join(""))
+		    $(['#', this._id].join(""))
                 .progressbar({
                     outerTheme: this._outerTheme,
                     innerTheme: this._innerTheme,
@@ -356,7 +354,7 @@
                     max: this._max,
                     mini: this._mini,
                     indefinite: this._indefinite,
-                    counter: this.showCounter
+                    counter: this._showCounter
                 });
             this._isBuilt = true;
             return this;
