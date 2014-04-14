@@ -12,7 +12,8 @@
             value: 0,
             max: 100,
             counter: true,
-            indefinite: false
+            indefinite: false,
+			text: null
         },
         min: 0,
         _create: function () {
@@ -31,12 +32,14 @@
                     "max-value": this.options.max,
                     "content-value": this._value()
                 });
-            if (counter && !this.options.indefinite) {
+            if (!this.options.indefinite) {
                 this.labelContent = ($("<div></div>")
                     .addClass('ui-jqm-progressbar-label ui-jqm-progressbar-corner-all'))
                     .appendTo(this.element);
 				if (this.options.counter) {
 					this.labelContent.text(this._value());
+				} else if (this.options.text != null) {
+					this.labelContent.text(this.options.text);
 				}
             }
             this.valueContent = ($("<div></div>")
@@ -68,13 +71,29 @@
             return this;
         },
         _setOption: function (key, value) {
-            this.options.value = value;
-            if (key === "value") {
-                this._refreshValue();
-                if (this._value() === this.options.max) {
-                    this.element.trigger("complete");
-                }
-            }
+			switch(key)
+			{
+				case "value":
+					this.options.value = value;
+					this._refreshValue();
+					if (this._value() === this.options.max) {
+						this.element.trigger("complete");
+					}				
+				break;
+				case "innerTheme":
+					this.options.innerTheme = value;
+					this.valueContent.removeClass();
+					this.valueContent.addClass(['ui-jqm-progressbar-bg ', " ui-jqm-progressbar-active-", value,
+						' ui-jqm-progressbar-corner-all'
+					].join(""));
+				break;
+				case "text":
+					this.options.text = value;
+					this.labelContent.text(value);
+				break;
+				default:
+				break;
+			}
         },
         _value: function () {
             var val = this.options.value;
